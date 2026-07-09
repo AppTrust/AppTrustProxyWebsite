@@ -1,50 +1,170 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
+<SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION} bodyClass="home-page">
+	<section class="hero" aria-labelledby="hero-title">
+		<div class="hero__inner">
+			<img class="hero__mark" src="/app-trust-proxy-icon.png" alt="" width="112" height="112" decoding="async" />
+			<h1 id="hero-title">App Trust Proxy</h1>
+			<p class="hero__lead">
+				Authorized application traffic inspection for local labs. App Trust Proxy Core is a free open source proxy runtime for capturing, replaying, mocking, and modifying traffic while you test apps and devices you control.
 			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
+			<p class="hero__note">
+				App Trust Proxy is also the name of the desktop app for Mac that is still under development.
 			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
+			<div class="hero__actions" aria-label="Primary actions">
+				<a class="button button--primary" href="/docs/#start-core">Start Core</a>
+				<a class="button button--secondary" href="/docs/">Read docs</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section intro-strip" aria-label="Project summary">
+		<div class="section__inner intro-strip__grid">
+			<div>
+				<span class="label">Core</span>
+				<strong>Free and open source</strong>
+				<p>Run the local proxy, web console, capture store, rules, scripts, and profile system.</p>
+			</div>
+			<div>
+				<span class="label">Desktop</span>
+				<strong>Mac app in development</strong>
+				<p>A native app is planned for the same trusted traffic workflows with a desktop-first experience.</p>
+			</div>
+			<div>
+				<span class="label">Scope</span>
+				<strong>Authorized testing only</strong>
+				<p>Use it with apps, devices, networks, and systems that you own or have explicit permission to test.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" id="core" aria-labelledby="core-title">
+		<div class="section__inner two-column">
+			<div class="section-copy">
+				<p class="section-kicker">App Trust Proxy Core</p>
+				<h2 id="core-title">The open source proxy runtime</h2>
+				<p>
+					Core is the portable project you can run in a local lab. It provides HTTP and HTTPS proxying, SOCKS5, DNS override support, generated local certificates, domain allowlists, raw traffic capture, mocking, scripts, and reusable profiles.
+				</p>
+				<p>
+					It is designed for development, QA, security research with permission, and repeatable app traffic experiments where every change should be visible and portable.
+				</p>
+				<a class="text-link" href="/docs/#start-core">Get started with Core</a>
+			</div>
+			<div class="feature-list" aria-label="Core capabilities">
+				<article>
+					<h3>Capture and inspect</h3>
+					<p>View request and response headers, bodies, decoded payloads, raw bytes, and modification history for allowlisted domains.</p>
+				</article>
+				<article>
+					<h3>Mock and modify</h3>
+					<p>Return raw HTTP answers, adjust requests, rewrite responses, and preserve a visible audit of changes.</p>
+				</article>
+				<article>
+					<h3>Export profiles</h3>
+					<p>Package domains, rules, scripts, prompts, capture settings, and setup notes so another tester can reproduce the same proxy behavior.</p>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section--tint" id="desktop" aria-labelledby="desktop-title">
+		<div class="section__inner two-column two-column--reverse">
+			<div class="edition-panel">
+				<img src="/app-trust-proxy-mark.svg" alt="" width="92" height="92" loading="lazy" />
+				<h3>App Trust Proxy for Mac</h3>
+				<p>Under development</p>
+			</div>
+			<div class="section-copy">
+				<p class="section-kicker">Desktop app</p>
+				<h2 id="desktop-title">A native Mac experience is planned</h2>
+				<p>
+					The desktop app will focus on a polished local workflow for the same trusted proxy use case. Core remains the open source foundation, while the Mac app is being developed as the branded desktop product.
+				</p>
+				<p>
+					The naming is intentional. App Trust Proxy Core is the community project. App Trust Proxy is the desktop app and product family.
+				</p>
+				<a class="text-link" href="/about/">Read about the project editions</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" id="workflow" aria-labelledby="workflow-title">
+		<div class="section__inner">
+			<div class="section-heading">
+				<p class="section-kicker">Workflow</p>
+				<h2 id="workflow-title">Built for repeatable traffic tests</h2>
+				<p>
+					App Trust Proxy Core helps you define the traffic you want to see, decide how it should change, and export that setup for another local environment.
+				</p>
+			</div>
+
+			<div class="flow-map" aria-label="Core traffic flow">
+				<div class="flow-node">
+					<span>1</span>
+					<strong>Test client</strong>
+					<p>Configure proxy, SOCKS, or DNS for the app or device under test.</p>
+				</div>
+				<div class="flow-arrow" aria-hidden="true"></div>
+				<div class="flow-node">
+					<span>2</span>
+					<strong>Core runtime</strong>
+					<p>Apply allowlists, certificates, scripts, mocks, profiles, and interaction prompts.</p>
+				</div>
+				<div class="flow-arrow" aria-hidden="true"></div>
+				<div class="flow-node">
+					<span>3</span>
+					<strong>Upstream service</strong>
+					<p>Forward passthrough traffic or replace matching traffic with configured answers.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section--tint" id="docs" aria-labelledby="docs-title">
+		<div class="section__inner">
+			<div class="section-heading">
+				<p class="section-kicker">Documentation</p>
+				<h2 id="docs-title">Everything needed to run a trusted local proxy</h2>
+			</div>
+
+			<div class="doc-grid">
+				<a href="/docs/#start-core">
+					<span>01</span>
+					<strong>Start Core</strong>
+					<p>Run with Docker or the direct local script when Docker is not available.</p>
+				</a>
+				<a href="/docs/#domains">
+					<span>02</span>
+					<strong>Match domains and URLs</strong>
+					<p>Allowlist hostnames, choose capture settings, and define request or answer behavior.</p>
+				</a>
+				<a href="/docs/#raw-answers">
+					<span>03</span>
+					<strong>Return raw answers</strong>
+					<p>Serve exact raw HTTP responses for matching client requests.</p>
+				</a>
+				<a href="/docs/#profiles">
+					<span>04</span>
+					<strong>Share profiles</strong>
+					<p>Export a setup that another tester can import and run with the same behavior.</p>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section safety-band" id="safety" aria-labelledby="safety-title">
+		<div class="section__inner safety-band__inner">
+			<div>
+				<p class="section-kicker">Safety</p>
+				<h2 id="safety-title">Local lab use only</h2>
+			</div>
 			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
+				Keep the web UI, generated root CA, private keys, capture store, proxy listeners, DNS listener, and exported profiles private. Do not expose them to the public internet.
 			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+		</div>
+	</section>
+</SiteLayout>

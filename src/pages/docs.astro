@@ -1,0 +1,177 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const dockerCommand = "docker compose up --build";
+const webConsoleURL = "http://localhost:8080";
+const directRunnerCommand = "./scripts/run_without_docker.sh";
+const domainExamples = `example.com
+api.example.com
+*.example.com`;
+const rawAnswerExample = `HTTP/1.1 200 OK
+Content-Type: application/json
+X-App-Trust-Proxy: mock
+
+{"ok":true}`;
+---
+
+<SiteLayout
+	title="App Trust Proxy Documentation"
+	description="Run App Trust Proxy Core, configure trusted local traffic capture, mock raw answers, and share reusable profiles."
+	bodyClass="docs-page"
+>
+	<section class="page-hero page-hero--docs">
+		<div class="page-hero__inner">
+			<img src="/app-trust-proxy-icon.png" alt="" width="88" height="88" decoding="async" />
+			<h1>Documentation</h1>
+			<p>
+				Start App Trust Proxy Core, connect a test client, allowlist traffic, return raw answers, pause requests for operator input, and export the setup as a reusable profile.
+			</p>
+		</div>
+	</section>
+
+	<div class="docs-shell">
+		<aside class="docs-nav" aria-label="Documentation sections">
+			<a href="#start-core">Start Core</a>
+			<a href="#ports">Local services</a>
+			<a href="#clients">Client setup</a>
+			<a href="#domains">Domains and URLs</a>
+			<a href="#raw-answers">Raw answers</a>
+			<a href="#interaction-prompts">Interaction prompts</a>
+			<a href="#profiles">Profiles</a>
+			<a href="#safety">Safety</a>
+		</aside>
+
+		<div class="docs-content">
+			<section id="start-core" class="doc-section">
+				<p class="section-kicker">Start Core</p>
+				<h2>Run with Docker</h2>
+				<p>
+					The default Docker setup runs the web console on localhost and keeps persistent state in the project data folder.
+				</p>
+				<pre><code>{dockerCommand}</code></pre>
+				<p>
+					Open the web console after startup.
+				</p>
+				<pre><code>{webConsoleURL}</code></pre>
+
+				<h3>Run without Docker</h3>
+				<p>
+					Use the local runner when Docker is not available or when you want to run the checked out project directly.
+				</p>
+				<pre><code>{directRunnerCommand}</code></pre>
+				<p>
+					The script detects macOS or the Linux distro, checks Node.js and OpenSSL, asks before installing missing tools, explains what it will run, then asks again before starting the server.
+				</p>
+			</section>
+
+			<section id="ports" class="doc-section">
+				<p class="section-kicker">Local services</p>
+				<h2>Default ports</h2>
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr>
+								<th>Service</th>
+								<th>Port</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Web UI</td>
+								<td>8080</td>
+							</tr>
+							<tr>
+								<td>HTTP proxy and HTTPS CONNECT proxy</td>
+								<td>8081</td>
+							</tr>
+							<tr>
+								<td>SOCKS5 proxy</td>
+								<td>1080</td>
+							</tr>
+							<tr>
+								<td>DNS over UDP and TCP</td>
+								<td>1053</td>
+							</tr>
+							<tr>
+								<td>Transparent style HTTP listener</td>
+								<td>8082</td>
+							</tr>
+							<tr>
+								<td>Transparent style HTTPS listener</td>
+								<td>8443</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section id="clients" class="doc-section">
+				<p class="section-kicker">Client setup</p>
+				<h2>Connect a test app or device</h2>
+				<p>
+					Choose the local IP in Network Modes, then configure the test client to use the proxy, SOCKS, or DNS listener. Install the generated root CA only on isolated test devices that you control.
+				</p>
+				<p>
+					For HTTPS inspection, the target domain must be allowlisted, MITM must be enabled for that rule, and the test client must trust the generated root certificate.
+				</p>
+			</section>
+
+			<section id="domains" class="doc-section">
+				<p class="section-kicker">Domains and URLs</p>
+				<h2>Match the traffic you want to control</h2>
+				<p>
+					Add domain rules before expecting body capture, mocks, scripts, or prompts. A rule can match a host such as one of these examples.
+				</p>
+				<pre><code>{domainExamples}</code></pre>
+				<p>
+					Use URL and path conditions in rules when you need behavior for one endpoint instead of every request on a host.
+				</p>
+			</section>
+
+			<section id="raw-answers" class="doc-section">
+				<p class="section-kicker">Raw answers</p>
+				<h2>Return an exact HTTP response</h2>
+				<p>
+					A raw answer lets Core return a configured response without contacting the upstream server. Keep a blank line between headers and body.
+				</p>
+				<pre><code>{rawAnswerExample}</code></pre>
+				<p>
+					When the rule matches, the traffic entry records that the answer came from a mock rule and shows the modification history.
+				</p>
+			</section>
+
+			<section id="interaction-prompts" class="doc-section">
+				<p class="section-kicker">Interaction prompts</p>
+				<h2>Pause traffic for user input</h2>
+				<p>
+					A profile can define prompts for matching requests or answers. Core can capture a value from headers or body, extract a value with regex, show it to the operator, wait up to the configured timeout, and apply the edited value before traffic continues.
+				</p>
+				<p>
+					This is useful when a shared test profile needs an environment token, account identifier, feature flag, or response field that should be chosen by the person running the proxy.
+				</p>
+			</section>
+
+			<section id="profiles" class="doc-section">
+				<p class="section-kicker">Profiles</p>
+				<h2>Export a reusable setup</h2>
+				<p>
+					Profiles are meant to make a lab reproducible. Export the rules, domain settings, scripts, raw answers, interaction prompts, capture preferences, and setup notes. Another user can import the profile and run Core with the same behavior.
+				</p>
+				<p>
+					Review profiles before sharing because they can contain scripts, hostnames, raw answers, and workflow notes that may reveal internal testing details.
+				</p>
+			</section>
+
+			<section id="safety" class="doc-section">
+				<p class="section-kicker">Safety</p>
+				<h2>Keep local trust material private</h2>
+				<p>
+					The generated root CA private key, captures, DNS logs, mock rules, scripts, and profiles should stay private. Do not expose the web UI, proxy listeners, DNS listener, generated certificates, or captured traffic store to the public internet.
+				</p>
+				<p>
+					Use passthrough for domains you do not need to inspect and remove trusted root certificates from test devices when the lab is finished.
+				</p>
+			</section>
+		</div>
+	</div>
+</SiteLayout>
