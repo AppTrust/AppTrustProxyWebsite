@@ -362,6 +362,13 @@ strong {
 	color: var(--accent);
 }
 
+.link-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 22px;
+	align-items: center;
+}
+
 .section {
 	background: var(--bg);
 }
