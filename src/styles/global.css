@@ -21,7 +21,8 @@
 	--contrast-muted: rgba(247, 250, 248, 0.78);
 	--shadow: 0 18px 44px rgba(19, 51, 42, 0.12);
 	--radius: 8px;
-	--content: min(1160px, calc(100% - 32px));
+	--content-gutter: max(16px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+	--content: min(1160px, calc(100% - var(--content-gutter) - var(--content-gutter)));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -55,13 +56,15 @@
 }
 
 html {
+	min-height: 100%;
 	background: var(--header-bg);
 	scroll-behavior: smooth;
-	scroll-padding-top: 104px;
+	scroll-padding-top: calc(104px + env(safe-area-inset-top, 0px));
 }
 
 body {
 	min-width: 320px;
+	min-height: 100%;
 	margin: 0;
 	background: var(--bg);
 	color: var(--text);
@@ -77,18 +80,6 @@ body {
 	line-height: 1.6;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
-}
-
-body::before {
-	content: "";
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: env(safe-area-inset-top);
-	background: var(--header-bg);
-	z-index: 99;
-	pointer-events: none;
 }
 
 body,
@@ -161,19 +152,22 @@ strong {
 	position: sticky;
 	top: 0;
 	z-index: 120;
-	background: var(--header-bg);
+	isolation: isolate;
+	background-color: var(--header-bg);
 	border-bottom: 1px solid var(--line);
-	padding-top: env(safe-area-inset-top);
+	padding-top: env(safe-area-inset-top, 0px);
 }
 
 .site-header::before {
 	content: "";
 	position: absolute;
-	top: calc(-1 * env(safe-area-inset-top));
 	left: 0;
 	right: 0;
-	height: env(safe-area-inset-top);
-	background: var(--header-bg);
+	bottom: 100%;
+	height: 100vh;
+	height: 100lvh;
+	background-color: var(--header-bg);
+	pointer-events: none;
 }
 
 .site-header__inner {
@@ -629,7 +623,8 @@ strong {
 }
 
 .page-hero__inner {
-	width: min(860px, calc(100% - 32px));
+	width: var(--content);
+	max-width: 860px;
 	margin: 0 auto;
 	padding: 84px 0 72px;
 	text-align: center;
@@ -841,7 +836,7 @@ tr:last-child td {
 .site-footer__inner {
 	width: var(--content);
 	margin: 0 auto;
-	padding: 42px 0 56px;
+	padding: 42px 0 max(56px, calc(22px + env(safe-area-inset-bottom, 0px)));
 	display: grid;
 	gap: 18px;
 }
@@ -915,11 +910,11 @@ tr:last-child td {
 
 @media (max-width: 700px) {
 	:root {
-		--content: min(100% - 24px, 1160px);
+		--content-gutter: max(12px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
 	}
 
 	html {
-		scroll-padding-top: 128px;
+		scroll-padding-top: calc(128px + env(safe-area-inset-top, 0px));
 	}
 
 	.site-header__inner {
